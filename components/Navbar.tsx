@@ -4,10 +4,10 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <div className="bg-white shadow p-4 flex justify-between">
-      <h1 className="font-bold text-blue-600">YEP System</h1>
+    <div className="bg-blue-600 text-white p-4 flex justify-between items-center shadow">
+      <h1 className="font-bold text-lg">YEP System</h1>
 
-      <div className="space-x-4">
+      <div className="flex gap-4 text-sm">
         <Link href="/dashboard">Dashboard</Link>
         <Link href="/dashboard/home">Home</Link>
         <Link href="/dashboard/wallet">Wallet</Link>
