@@ -1,21 +1,19 @@
-import type { ReactNode } from "react";
+import { ReactNode } from "react";
+import { redirect } from "next/navigation";
+import { getUserFromToken } from "@/lib/auth";
 import Navbar from "@/components/Navbar";
-import FloatingButton from "@/components/FloatingButton";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
+  const user: any = await getUserFromToken();
+
+  if (!user) {
+    redirect("/login"); // 🔒 BLOCK ACCESS
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
-      
-      {/* Top Navbar */}
+    <div>
       <Navbar />
-
-      {/* Page Content */}
-      <main className="flex-1 p-6 bg-gray-100">
-        {children}
-      </main>
-
-      {/* Floating Actions */}
-      <FloatingButton />
+      <div className="p-6">{children}</div>
     </div>
   );
 }
