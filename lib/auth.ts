@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export function getUserFromToken() {
-  const token = cookies().get("token")?.value;
+export async function getUserFromToken() {
+  const cookieStore = await cookies();
+
+  const token = cookieStore.get("token")?.value;
 
   if (!token) return null;
 
