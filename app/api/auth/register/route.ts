@@ -1,69 +1,31 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { processReferral } from "@/lib/mlm";
+import { NextResponse } from "next/server";
+import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const { fullName, phone, password } = body;
+  const { fullName, email, phone, password, referralCode } = await req.json();
 
-    if (!fullName || !phone || !password) {
-      return NextResponse.json({ message: "Missing fields" }, { status: 400 });
-    }
+  const hashed = await bcrypt.hash(password, 10);
 
-    const existing = await prisma.user.findUnique({
-      where: { phone },
+  let referrer = null;
+
+  if (referralCode) {
+    referrer = await prisma.user.findUnique({
+      where: { referralCode },
     });
-
-    if (existing) {
-      return NextResponse.json(
-        { message: "User already exists" },
-        { status: 400 }
-      );
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const role = await prisma.role.findFirst({
-      where: { code: "member" },
-    });
-
-    const newUser = await prisma.user.create({
-      data: {
-        fullName,
-        phone,
-        passwordHash: hashedPassword,
-        role: {
-          connect: { id: role!.id },
-        },
-        status: "pending",
-      },
-    });
-
-    // ✅ GENERATE MEMBER NUMBER
-    const memberNumber = "MBR-" + Date.now();
-
-    await prisma.memberProfile.create({
-      data: {
-        userId: newUser.id,
-        memberNumber, // ✅ FIXED
-      },
-    });
-
-    // ✅ REFERRAL PROCESS
-    const url = new URL(req.url);
-    const refCode = url.searchParams.get("ref");
-
-    if (refCode) {
-      await processReferral(Number(newUser.id), refCode);
-    }
-
-    return NextResponse.json({
-      message: "Registered successfully. Await payment approval.",
-    });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
+
+  const user = await prisma.user.create({
+    data: {
+      fullName,
+      email,
+      phone,
+      passwordHash: hashed,
+      referralCode: uuidv4(),
+      referredById: referrer?.id,
+    },
+  });
+
+  return NextResponse.json(user);
 }
