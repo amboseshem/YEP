@@ -10,12 +10,12 @@ export default function Navbar() {
       <div className="space-x-4">
         <Link href="/dashboard">Dashboard</Link>
         <Link href="/dashboard/home">Home</Link>
+        <Link href="/dashboard/wallet">Wallet</Link>
+        <Link href="/dashboard/transactions">Transactions</Link>
+        <Link href="/dashboard/referrals">Referrals</Link>
+        <Link href="/dashboard/commissions">Commissions</Link>
+        <Link href="/dashboard/membership">Membership</Link>
       </div>
     </div>
   );
 }
-<Link href="/dashboard/wallet">Wallet</Link>
-<Link href="/dashboard/transactions">Transactions</Link>
-<Link href="/dashboard/referrals">Referrals</Link>
-<Link href="/dashboard/commissions">Commissions</Link>
-<Link href="/dashboard/membership">Membership</Link>
