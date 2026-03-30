@@ -1,12 +1,9 @@
 import "./globals.css";
-import type { ReactNode } from "react";
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: any) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-gray-800">
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
