@@ -18,7 +18,9 @@ export default function Navbar() {
         <Link href="/dashboard/transactions">Transactions</Link>
         <Link href="/dashboard/referrals">Referrals</Link>
         <Link href="/dashboard/commissions">Commissions</Link>
-
+        <Link href="/dashboard/admin">Admin</Link>
+        <Link href="/dashboard/mlm">MLM</Link>
+        <Link href="/dashboard/analytics">Analytics</Link>
         <button
           onClick={logout}
           className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
