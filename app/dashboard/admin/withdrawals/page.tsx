@@ -9,7 +9,7 @@ export default async function WithdrawalsPage() {
     <div>
       <h1 className="text-xl font-bold">Withdraw Requests</h1>
 
-      {requests.map((r) => (
+      {requests.map((r: any) => (
         <div key={r.id} className="border p-2 mb-2">
 
           <p>{r.amount}</p>

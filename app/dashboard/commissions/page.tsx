@@ -13,7 +13,7 @@ export default async function CommissionPage() {
 
       <h1 className="text-xl font-bold mb-4">My Earnings</h1>
 
-      {commissions.map((c) => (
+      {commissions.map((c: any) => (
         <div key={c.id} className="bg-green-100 p-2 mb-2 rounded">
           Level {c.level} → {c.amount}
         </div>
