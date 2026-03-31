@@ -22,9 +22,11 @@ export async function POST(req: Request) {
 
   // 🔐 PORTAL CONTROL
   if (portal === "admin" && user.role === "MEMBER") {
-    return NextResponse.json({ error: "Not allowed in admin portal" }, { status: 403 });
-  }
-
+  return NextResponse.json({ error: "Use member portal" }, { status: 403 });
+}
+if (portal === "member" && user.role !== "MEMBER") {
+  // allow admin to still access member portal
+}
   const token = jwt.sign(
     {
       id: user.id,
