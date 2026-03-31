@@ -7,7 +7,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const user: any = await getUserFromToken();
 
   if (!user) {
-    redirect("/login"); // 🔒 BLOCK ACCESS
+    redirect("/login");
   }
 
   return (
