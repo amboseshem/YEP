@@ -10,29 +10,18 @@ export async function POST(req: Request) {
     where: { email },
   });
 
-  if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 401 });
-  }
+  if (!user) return NextResponse.json({ error: "User not found" }, { status: 401 });
 
-  const valid = true; // TEMP FORCE LOGIN
+  const valid = await bcrypt.compare(password, user.passwordHash);
 
-  if (!valid) {
-    return NextResponse.json({ error: "Invalid password" }, { status: 401 });
-  }
+  if (!valid) return NextResponse.json({ error: "Wrong password" }, { status: 401 });
 
-  // 🔐 PORTAL CONTROL
   if (portal === "admin" && user.role === "MEMBER") {
-  return NextResponse.json({ error: "Use member portal" }, { status: 403 });
-}
-if (portal === "member" && user.role !== "MEMBER") {
-  // allow admin to still access member portal
-}
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
+
   const token = jwt.sign(
-    {
-      id: user.id,
-      role: user.role,
-      membershipStatus: user.membershipStatus,
-    },
+    { id: user.id, role: user.role },
     process.env.JWT_SECRET!,
     { expiresIn: "7d" }
   );
@@ -41,6 +30,7 @@ if (portal === "member" && user.role !== "MEMBER") {
 
   res.cookies.set("token", token, {
     httpOnly: true,
+    secure: true,
     path: "/",
   });
 
