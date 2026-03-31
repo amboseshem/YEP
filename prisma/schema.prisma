@@ -9,8 +9,8 @@ datasource db {
 
 enum Role {
   SUPER_ADMIN
-  ADMIN
-  TREASURY
+  FINANCE
+  TRAINER
   MEMBER
 }
 

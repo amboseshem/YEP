@@ -1,26 +1,24 @@
 import { prisma } from "@/lib/prisma";
-
-type CommissionType = {
-  id: string;
-  amount: number;
-  level: number;
-};
+import { getUserFromToken } from "@/lib/auth";
 
 export default async function CommissionPage() {
+  const user: any = await getUserFromToken();
+
   const commissions = await prisma.commission.findMany({
-    orderBy: { createdAt: "desc" },
+    where: { userId: user.id },
   });
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Commissions</h1>
 
-      {commissions.map((c: CommissionType) => (
-        <div key={c.id} className="bg-white p-3 rounded shadow mb-2">
-          <p>Earned: {c.amount}</p>
-          <p className="text-sm text-gray-500">Level {c.level}</p>
+      <h1 className="text-xl font-bold mb-4">My Earnings</h1>
+
+      {commissions.map((c) => (
+        <div key={c.id} className="bg-green-100 p-2 mb-2 rounded">
+          Level {c.level} → {c.amount}
         </div>
       ))}
+
     </div>
   );
 }
