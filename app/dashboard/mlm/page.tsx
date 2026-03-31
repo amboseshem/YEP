@@ -41,7 +41,7 @@ export default async function AdminPage() {
 
         <h2 className="font-bold mb-4">All Users</h2>
 
-        {users.map((u) => (
+        {users.map((u: any) => (
           <div key={u.id} className="border p-2 mb-2 rounded">
 
             <p>{u.fullName}</p>
